@@ -122,4 +122,14 @@ class EmployeeRESTControllerIntegrationTest {
                 .andExpect(mvcResult ->
                         assertTrue(mvcResult.getResolvedException() instanceof EntityNotFoundException));
     }
+
+    @Test
+    void listAllEmployeesByName_getEmployeesByName_status200() throws Exception {
+        mockMvc.perform(
+                get("/api/employees/name/John"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("John"))
+                .andExpect(jsonPath("$[1].name").value("John"));
+    }
 }

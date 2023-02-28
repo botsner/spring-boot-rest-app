@@ -128,4 +128,18 @@ class EmployeeServiceImplTest {
         Mockito.verify(empRepo, Mockito.times(1)).findById(5);
         Mockito.verify(empRepo, Mockito.times(0)).deleteById(Mockito.anyInt());
     }
+
+    @Test
+    void getAllEmployeesByName() {
+        Employee emp1 = new Employee("John", "Miller", "HR", 1000);
+        Employee emp2 = new Employee("John", "Brown", "IT", 1200);
+
+        Mockito.doReturn(Arrays.asList(emp1, emp2))
+                .when(empRepo)
+                .findAllByName("John");
+
+        assertIterableEquals(Arrays.asList(emp1, emp2), empService.getAllEmployeesByName("John"));
+
+        Mockito.verify(empRepo, Mockito.times(1)).findAllByName("John");
+    }
 }

@@ -162,4 +162,22 @@ public class EmployeeRESTControllerUnitTest {
                 .andExpect(mvcResult ->
                         assertTrue(mvcResult.getResolvedException() instanceof EntityNotFoundException));
     }
+
+    @Test
+    void listAllEmployeesByName_getEmployeesByName_status200() throws Exception {
+        Employee emp1 = new Employee("John", "Miller", "HR", 1000);
+        Employee emp2 = new Employee("John", "Brown", "IT", 1200);
+
+        Mockito.doReturn(Arrays.asList(emp1, emp2))
+                .when(employeeService)
+                .getAllEmployeesByName(Mockito.anyString());
+
+        mockMvc.perform(
+                get("/api/employees/name/John"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(emp1, emp2))));
+
+        Mockito.verify(employeeService, Mockito.only()).getAllEmployeesByName(Mockito.anyString());
+    }
 }

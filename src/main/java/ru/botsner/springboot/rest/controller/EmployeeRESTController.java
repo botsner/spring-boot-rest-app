@@ -62,4 +62,10 @@ public class EmployeeRESTController {
         }
         return ResponseEntity.ok().body(deletedEmp);
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Employee>> listAllEmployeesByName(@PathVariable("name") String name) {
+        List<Employee> employees = employeeService.getAllEmployeesByName(name);
+        return ResponseEntity.ok().body(employees);
+    }
 }
